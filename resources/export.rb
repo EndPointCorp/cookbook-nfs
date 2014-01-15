@@ -22,7 +22,7 @@ def initialize(*args)
   @action = :create
 end
 
-actions :create
+actions :create, :delete
 
 attribute :directory, :name_attribute => true
 attribute :network, :required
