@@ -70,6 +70,7 @@ Applications or other cookbooks can use the nfs\_export LWRP to add exports:
       writeable false 
       sync true
       options ['no_root_squash']
+      action :create
     end
 
 The default parameters for the nfs\_export LWRP are as follows
@@ -103,6 +104,11 @@ The default parameters for the nfs\_export LWRP are as follows
 * options
   - additional export options as an array, excluding the parameterized sync/async, ro/rw options, and anoymous mappings
   - defaults to root\_squash
+
+* action
+  - :create will add or replace an export line for the given directory and network
+  - :delete will delete export lines matching the given directory and network
+  - defaults to :create
 
 ## nfs::undo recipe
 
