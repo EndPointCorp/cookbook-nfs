@@ -39,7 +39,8 @@ action :create do
     options = new_resource.options.join(',')
     options = ",#{options}" unless options.empty?
 
-    export_line = "#{new_resource.directory} #{new_resource.network}(#{ro_rw},#{sync_async}#{options})\n"
+    export_pattern = "^#{new_resource.directory} #{new_resource.network}[\\\(\\\n]"
+    export_line = "#{new_resource.directory} #{new_resource.network}(#{ro_rw},#{sync_async}#{options})"
 
     execute "exportfs" do
       command "exportfs -ar"
@@ -52,8 +53,9 @@ action :create do
         notifies :run, "execute[exportfs]", :immediately
       end
     else
-      append_if_no_line "export #{new_resource.name}" do
+      replace_or_add "export #{new_resource.name}" do
         path "/etc/exports"
+        pattern export_pattern
         line export_line
         notifies :run, "execute[exportfs]", :immediately
       end
